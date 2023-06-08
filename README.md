@@ -2,7 +2,7 @@
 
 *Authors: Nathan B. Wikle and Corwin M. Zigler*
 
-This repository contains source code and additional supplementary materials from our manuscript, "Causal health impacts of power plant emission controls under modeled and uncertain physical process interference."  Supplementary materials from the manuscript, including a detailed simulation study, can be found within `supp-material.pdf`. Relevant data have been archived (`doi = ZENODO`) for reproducibility.
+This repository contains source code and additional supplementary materials from our manuscript, "Causal health impacts of power plant emission controls under modeled and uncertain physical process interference."  Supplementary materials from the manuscript, including a detailed simulation study, can be found within `supp-material.pdf`. Relevant data (`doi = 10.5281/zenodo.8015586`) and results (10.5281/zenodo.8015752) have been archived for reproducibility.
 
 The following instructions provide details on how to run the source code underlying the analysis. 
 
@@ -24,6 +24,7 @@ The code has been tested with R version 4.1.3, "One Push-Up."  The following **R
 - [`GIGrvg`](https://cran.r-project.org/web/packages/GIGrvg/index.html)  (0.7)
 - [`glmnet`](https://cran.r-project.org/web/packages/glmnet/index.html)  (4.1.4)
 - [`here`](https://CRAN.R-project.org/package=here)  (1.0.1)
+- [`inborutils`](https://github.com/inbo/inborutils)  (0.3.0)
 - [`maps`](https://cran.r-project.org/web/packages/maps/index.html)  (3.4.0)
 - [`MASS`](https://cran.r-project.org/web/packages/MASS/index.html)  (7.3.55)
 - [`MatchIt`](https://cran.r-project.org/web/packages/MatchIt/index.html)  (4.4.0)
@@ -58,24 +59,30 @@ The code has been tested with R version 4.1.3, "One Push-Up."  The following **R
 - [`USAboundaries`](https://github.com/ropensci/USAboundaries)  (0.4.0)
 - [`WeightIt`](https://cran.r-project.org/web/packages/WeightIt/index.html)  (0.13.1)
 
+### `countbart` package install
+
+In addition to the above packages, the `countbart` package must be installed from source. This package implements the log-linear BART models used in our paper. The package tarbal has been included as `./src/countbart_0.1.tar.gz`, and the install is performed in Section 1 of the script `./R/main.R`.
+
 ## Data
 
-Publicly available data have been archived for download at the beginning of the analysis (doi = ZENODO). They require X GB of space within the subdirectory. Unfortunately, due to privacy considerations, the health outcome data (pediatric asthma ED visits and Medicare all-cause mortality in Texas) may not be publicly distributed. Instead, we have included synthetic data as a placeholder. There are **X main data sources:**
+Publicly available data have been archived for download at the beginning of the analysis (doi = 10.5281/zenodo.8015586). They require 3.4 GB of space within the subdirectory. Unfortunately, due to privacy considerations, the health outcome data (pediatric asthma ED visits and Medicare all-cause mortality in Texas) cannot be publicly distributed. Instead, we have included a synthetic dataset, `synth-ped-asthma-data`, as a placeholder. 
 
-### Coal-fired power plant emissions
+**Eleven main data sources are downloaded:**
 
-Emissions data are from the US Environmental Protection Agency's [Air Markets Program Data (AMPD)](https://ampd.epa.gov/ampd/). The AMPD provides access to current and historical monthly emissions data on electricity generating units (EGUs), collected as part of EPA's emissions trading programs. The downloaded AMPD are named `AMPD_Unit_with_Sulfur_Content_and_Regulations_with_Facility_Attributes.csv`. This file contains monthly emissions totals of SO2 (and other chemical emissions), as well as characteristics of the EGUs from 1995-2017. The following columns are most relevant to our analysis:
+1. USA Coal-fired power plant emissions data
+- `AMPD_Unit_with_Sulfur_Content_and_Regulations_with_Facility_Attributes.csv`
+- Coal-fired power plan emissions data from the US Environmental Protection Agency's [Air Markets Program Data (AMPD)](https://ampd.epa.gov/ampd/). The AMPD provides access to current and historical monthly emissions data on electricity generating units (EGUs), collected as part of EPA's emissions trading programs. A comprehensive list of AMPD column definitions is included for reference (see the downloaded `AMPD_column_definitions.csv` file).
 
-- `Facility.ID`: unique six-digit facility identification number, also called an ORISPL, assigned by the Energy Information Administration
-- `Unit.ID`: unique identifier for each unit at a facility
-- `Year`: the calendar year during which activity occurred
-- `Month`: the month in which activity occurred
-- `Facility.Longitude`: the physical longitude of the facility
-- `Facility.Latitutde`: the physical latitude of the facility
-- `SO2..tons`: sulfur dioxide (SO2) emissions, in short tons
-- `Has.SO2.Scrub`: denotes use of flue-gas desulfurization (FGD) emissions reduction technologies (i.e., a scrubber is in use) 
+2. US Census 2016 American Community Survey (ACS) data
+- `Census_2016_TxZCTA.RDS`
+- Demographic data were downloaded from the [US Census ACS](https://www.census.gov/programs-surveys/acs) using the R package [`tidycensus`](https://walker-data.com/tidycensus/). The R script which generates this data (`./R/outcome-analysis/census-data.R`) has been included for reference.
 
-Additional variables are not relevant to this analysis, however, a comprehensive list of AMPD column definitions is included for reference (see the downloaded `AMPD_column_definitions.csv` file). 
+3. Daymet Annual Climate Summaries
+- `daymet_v4_prcp_annttl_na_2016.nc`
+- `daymet_v4_tmax_annavg_na_2016.nc`
+- `daymet_v4_tmin_annavg_na_2016.nc`
+- `daymet_v4_vp_annavg_na_2016.nc`
+- High-resolution climate data (annual total precipitation, annual average daily maximum 2-meter air temperature, annual average daily minimum 2-meter air temperature, and annual average daily water vapor pressure), downloaded from ORNL's [Daymet Version 4](https://daac.ornl.gov/DAYMET/guides/Daymet_V4_Annual_Climatology.html).
 
 ### 2011 mean sulfate concentrations
 
