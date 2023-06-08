@@ -69,7 +69,7 @@ Publicly available data have been archived for download at the beginning of the 
 
 **Eleven main data sources are downloaded:**
 
-1. USA Coal-fired power plant emissions data
+1. USA coal-fired power plant emissions data
 - `AMPD_Unit_with_Sulfur_Content_and_Regulations_with_Facility_Attributes.csv`
 - Coal-fired power plan emissions data from the US Environmental Protection Agency's [Air Markets Program Data (AMPD)](https://ampd.epa.gov/ampd/). The AMPD provides access to current and historical monthly emissions data on electricity generating units (EGUs), collected as part of EPA's emissions trading programs. A comprehensive list of AMPD column definitions is included for reference (see the downloaded `AMPD_column_definitions.csv` file).
 
@@ -84,43 +84,53 @@ Publicly available data have been archived for download at the beginning of the 
 - `daymet_v4_vp_annavg_na_2016.nc`
 - High-resolution climate data (annual total precipitation, annual average daily maximum 2-meter air temperature, annual average daily minimum 2-meter air temperature, and annual average daily water vapor pressure), downloaded from ORNL's [Daymet Version 4](https://daac.ornl.gov/DAYMET/guides/Daymet_V4_Annual_Climatology.html).
 
-### 2011 mean sulfate concentrations
+4. 2016 mean SO4 and black carbon concentrations
+- `GWRwSPEC_SO4_NA_201601_201612.nc`
+- `GWRwSPEC_BC_NA_201601_201612.nc`
+- Annual mean sulfate and black carbon concentrations were obtained from Randall Martin's Athmospheric Composition Analysis Group's [North American Regional Estimates (V4.NA.03) dataset](https://sites.wustl.edu/acag/datasets/surface-pm2-5/#V4.NA.03).
 
-Annual mean sulfate concentrations were obtained from the Randall Martin Atmospheric Composition Analysis Group's [North American Regional Estimates (V4.NA.03) dataset](https://sites.wustl.edu/acag/datasets/surface-pm2-5/#V4.NA.03). The data consist of raster annual mean SO4 data (micrograms per cubic meter; grid resolution = 0.01 x 0.01 degrees), as described in [van Donkelaar et al. (2019)](https://pubs.acs.org/doi/10.1021/acs.est.8b06392). The downloaded SO4 file is named `GWRwSPEC_SO4_NA_201101_201112.nc`. 
+5. HyADS coal-attributed PM2.5 concentrations
+- `HyADS_grids_pm25_byunit_2016.fst`
+- `HyADS_grids_pm25_total_2016.fst`
+- Estimated 2016 coal-attributed PM2.5 concentrations from the Hysplit average dispersion (HyADS) model [(Henneman et al. (2019)](https://doi.org/10.1097/EDE.0000000000001024), a deterministic, reduced-complexity model of pollution transport.
 
-### 2010 US population density
+6. Mexico coal-fired power plant emissions data
+- `Mexico_2016_point_interpolated_02mar2018_v0.csv`
+- 2016 coal-fired power plant SO2 emissions data, as estimated by the US EPA's [National Emissions Inventory platform, 2016v1](https://www.epa.gov/air-emissions-modeling/2014-2016-version-7-air-emissions-modeling-platforms).
 
-US population density estimates were downloaded from the [USGS ScienceBase Catelog's](http://dx.doi.org/10.5066/F74J0C6M) block-level population density rasters. The 2010 dataset includes density rasters at 60-m resolution. The downloaded data file is named `pden2010_60m.tif`.
+7. North American Regional Reanalysis meteorological data
+- `rhum.2m.mon.mean.nc`
+- `uwnd.10m.mon.mean.nc`
+- `vwnd.10m.mon.mean.nc`
+- Meteorological data (relative humidity, 10m wind velocities) from the NOAA Physical Science Laboratory [NCEP North American Regional Reanalysis (NARR)](https://psl.noaa.gov/data/gridded/data.narr.monolevel.html) database.
 
-### Meteorological data
+8. Cigarette smoking data
+- `smokedatwithfips_1996-2012.csv`
+- Data on cigarette smoking prevalance in US counties from 1996-2012, obtained from [Dwyer-Lindgren et al. (2014)](https://doi.org/10.1186/1478-7954-12-5).
 
-Meteorological data are from the NOAA Physical Science Laboratory [NCEP North American Regional Reanalysis (NARR)](https://psl.noaa.gov/data/gridded/data.narr.monolevel.html) database. Downloaded files include:
-- `air.2m.mon.mean.nc`: monthly mean air temperature at 2 m
-- `apcp.mon.mean.nc`: monthly average of daily accumulated total precipitation
-- `rhum.2m.mon.mean.nc`: monthly mean relative humidity at 2 m
-- `uwnd.10m.mon.mean.nc`: monthly mean U-wind at 10 m
-- `vwnd.10m.mon.mean.nc`: monthly mean V-wind at 10 m
-These files are read into R as raster layers.
+9. Synthetic pediatric asthma data
+- `synth-ped-asthma-data.csv`
+- *Simulated* pediatric asthma data to match the format, but not the observations, from the [Texas Health Care Information Collection (THCIC), Texas DSHS](https://www.dshs.texas.gov/texas-health-care-information-collection).
 
-### Data Preprocessing
+10. Texas state shape file
+- `texas-state-sf.RDS`
+- A shapefile of the state of Texas obtained from [US Census](https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html)
 
-Downloaded data are processed at the beginning of this analysis, using `make-facility-data.R` and `data-cleaning.R`. These two files produce a single R list object, saved as `central-usa-data.RDS`, which contains:
-
-1. `so4`: raster of 2011 SO4 surface
-2. `wind.big` and `wind.small`: rasters of wind vector elements, used to create operator matrix C
-3. `em`: 2011 power plant facility emissions data
-4. `X`: vector of annual SO2 emissions, matched to SO4 raster elements
-5. `pop`: raster of 2010 US population density 
-6. `temp`, `precip`, `rel.hum`: rasters of meteorological data
+11. US ZIPs-to-county data crosswalk
+- `tx-zip-to-county.csv`
+- A data crosswalk matching Texas ZIP codes to counties, obtained from the [Missouri Census Data Center](mcdc.missouri.edu/applications/geocorr2014.html).
 
 ## Instructions
 
-Before running any code, make sure the required R packages have been installed. Open and run the `main.R` file, found in the `./src/` folder.  Note that this script will take a long time to run sequentially. On a 2.3 GHz Intel Core i7 processor with 32 GB of memory, the script will take approximately 115 hours to run.  The script contains 9 sequential steps, which perform the following:
+Before running any code, make sure the required R packages have been installed. Open and run the `main.R` file, found in the `./R/` folder.  **Note that this script will take a very long time to run sequentially**. On a 2.3 GHz Quad-Core Intel Core i7 processor with 32 GB of memory, the script would take approximately 3110 hours to run. It is **highly recommended** that Sections 5 and 6 be run in parallel; by default, they will run in parallel on POSIX systems, with the number of workers = `detectCores()`. 
+
+The script has been divided into seven sequential steps, which perform the following:
 
 ### Step One: 
 
 - Loads required packages into R.
-- Time: < 0.01 seconds.
+- Install `countbart` from source.
+- Time: < 5 minutes.
 
 ### Step Two: 
 
@@ -129,47 +139,36 @@ Before running any code, make sure the required R packages have been installed. 
 
 ### Step Three:
 
-- Downloads the raw data sources used in the analysis. These data are publicly available, and have been archived (doi = 10.5281/zenodo.4072504) for reproducibility. These data require 1.7 GB of space.
-- Time: ~2.5 minutes.
-- Output size: 1.7 GB.
+- Downloads the raw data sources used in the analysis. These data are publicly available, and have been archived (doi = 10.5281/zenodo.8015586) for reproducibility. These data require 3.4 GB of space.
+- Downloads the main results from the analyses and simulation studies; they have been archived at Zenodo (doi = 10.5281/zenodo.8015752). The results require 28.9 GB of space.
+- Time: < 1 hour.
+- Output size: 32.3 GB.
 
 ### Step Four: 
 
-- Adds all functions from the script, `functions.R`, found in the `./src/` folder.
-- Time: < 0.01 seconds.
+- Performs the **sulfate analysis** from the main text, including: (i) cleaning and processing the emissions, wind, and sulfate data, and (ii) sampling from the sulfate model's posterior distribution via MCMC. 
+- Time: ~110 hours.
+- **Note: `./R/sulfate-analysis/so4-model.R` can be skipped, as the main results have already been downloaded! This saves ~ 110 computing hours.**
 
 ### Step Five: 
 
-- Loads the raw coal-fired power plant facilities data, cleans the data, and creates a data frame with relevant covariate values. After step three, the raw facility data are stored in the `./data/` folder as `AMPD_Unit_with_Sulfur_Content_and_Regulations_with_Facility_Attributes.csv`. This section saves four output RDS files - `MonthlyUnitData.RDS`, `AnnualUnitData.RDS`, `MonthlyFacilityData.RDS`, and `AnnualFacilityData.RDS` - in the `./data/` folder. 
-- Time: ~30 seconds.
-- Output size: 13.3 MB.
-
-### Step Six: 
-
-- Cleans all data (including environmental covariates, the SO4 response variable, and facilities data), and stores them as a single raster. This raster object is saved as `./data/central-usa-data.RDS`. This raster contains all data needed for the remaining analysis. The relevant raw data sources can be found in the subfolder, `./data/`, created in Step Two (see Data section above for more details).
-- Time: ~1 minute.
-- Output size: 3.8 MB.
+- Performs the **outcome model analysis**. This includes (i) cleaning and processing the census, climate, facility, black carbon, and outcome data, and (ii) sampling from the outcome model's posterior distbitution via MCMC. In particular, four types of inference are considered: 1. log-linear BART regression *with* uncertainty in the interference struxture (cut), 2. log-linear BART regression *without* uncertainty propagation (plugin), 3. Poisson regression with cut, and 4. Poisson regression with plugin. 
+- Time: ~ 48 hours / # workers
+- **Note: `./R/outcome-analysis/asthma-pois-plugin.R`, `./R/outcome-analysis/asthma-pois-cut.R`, `./R/outcome-analysis/asthma-bart-plugin.R`, and `./R/outcome-analysis/asthma-bart-cut.R` can be skipped, as the main results have already been downloaded! This saves ~ 47 computing hours.**
 
 ### Step Seven: 
 
-- Generates posterior draws (via MCMC) from the 4 models considered in the manuscript. The samples are stored as RDS files in `./output/`. 
-- Time: **CAUTION: THIS WILL TAKE A VERY LONG TIME**. To reproduce **all results in the manuscript takes ~111 hours**; to reproduce all results from the **supplementary materials takes an additional ~245 hours**. If possible, it is recommended that the individual steps 2-5 found in `./src/so4-mcmc.R` be completed in parallel. Note that steps 7-8 in `./src/so4-mcmc.R` reproduce results from the supplementary material; by default they are commented out.
-- Output size: 17.5 MB (manuscript only); 69.6 MB (manuscript + supp. materials).
+- Performs the **simulation studies** and **sensitivity analysis** found in the Supplement. This includes (i) creating data structures used throughout the simulation studies, (ii) six simulation studies, (iii) log-linear BART prior sensitivity analysis, and (iv) plotting the results of the simulation studies and sensitivity analysis (found in `./output/supplement/`).
+- Time: ~ 2952 hours / # workers.
+- **Note: The code which performs the simulation studies and sensitivity analysis can be skipped, as the main results have already been downloaded! This saves ~ 2951 computing hours.**
 
-### Step Eight:  
+### Step Seven: 
 
-- Summarizes the posterior draws with Figures, Tables, and results found in Section 4 of the manuscript. The figures will be saved as PNG files in `./output/`.  
-- Time: **CAUTION: THIS MAY TAKE ~1.25 HOURS** (due to the creation of Figure 4c).
-- Output size: 4.1 MB.
+- - Generates the Figures and results found in the main (`./output/main`) and supplementary (`./output/supplement`) text. 
+- Time: < 15 minutes.
 
-### Step Nine:
-
-- Generates the plots found within `supp-materials.pdf`. These are saved as PNGs in `./output/`. 
-- Time: ~10 seconds.
-- Output size: 7.4 MB.
-
-*Note: Step Nine is commented out in* `main.R`; *uncomment the source call to* `supp-plots.R` *and the last two numbered steps in* `so4-mcmc.R` *if you wish to reproduce the content in the Supplementary Material.*
+*Note: If the recommended steps have been skipped, the total runtime of `./main.R` is ~ 2.5 hours.*
 
 ## Output
 
-Upon successful completion of `main.R`, the results are saved as PNGs in the `./output/ms-figures` (or `./output/supp-figures`) folder. Example format includes `./output/ms-figures/fig1a.png`, etc. These figures will look very similar, if not identical, to those found in the published manuscript. Differences can be explained by small changes induced by random draws from the posterior. However, all results should be qualitatively the same.
+Upon successful completion of `main.R`, the results and figures found in the main text and supplement are saved as PNGs in the `./output/main` and `./output/supplement` folders. These will require ~ 80 MB of space. 
