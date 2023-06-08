@@ -133,9 +133,11 @@ source(here::here("R", "sulfate-analysis", "make-facility-data.R"))
 # iii. create SO4 raster data  (~30 seconds)
 source(here::here("R", "sulfate-analysis", "so4-data.R"))
 
-# iv. sample from sulfate model posterior with MCMC  (~110 hours)
-#       !!! CAUTION: TAKES ~110 hours !!!
-source(here::here("R", "sulfate-analysis", "so4-model.R"))
+# # iv. sample from sulfate model posterior with MCMC  (~110 hours)
+# #       !!! CAUTION: TAKES ~110 hours !!!
+# #   -> Skipped, as the main results were already downloaded in Section 3!
+#
+# source(here::here("R", "sulfate-analysis", "so4-model.R"))
 
 
 ##################################################################
@@ -170,23 +172,25 @@ source(here::here("R", "outcome-analysis", "outcome-data.R"))
 source(here::here("R", "outcome-analysis", "analysis-setup.R")) 
 source(here::here("R", "outcome-analysis", "bc-data.R"))
 
-### iv. asthma analysis 
-
-# poisson regression, plug-in inference 
-#   -> time: ~5 minutes
-source(here::here("R", "outcome-analysis", "asthma-pois-plugin.R"))
-
-# poisson regression, with uncertainty propagation
-#   -> time: ~6.25 hours / # workers (default: workers = detectCores())
-source(here::here("R", "outcome-analysis", "asthma-pois-cut.R"))
-
-# log-linear BART regression, plug-in inference
-#   -> time: ~50 minutes
-source(here::here("R", "outcome-analysis", "asthma-bart-plugin.R"))
-
-# log-linear BART regression, with uncertainty propagation
-#   -> time: ~41.5 hours / # workers (default: workers = detectCores())
-source(here::here("R", "outcome-analysis", "asthma-bart-cut.R"))
+# ### iv. asthma analysis 
+#  -> Skipped, with main results downloaded in Section 3!
+#       This saves ~ 47 computing hours
+# 
+# # poisson regression, plug-in inference 
+# #   -> time: ~5 minutes
+# source(here::here("R", "outcome-analysis", "asthma-pois-plugin.R"))
+# 
+# # poisson regression, with uncertainty propagation
+# #   -> time: ~6.25 hours / # workers (default: workers = detectCores())
+# source(here::here("R", "outcome-analysis", "asthma-pois-cut.R"))
+# 
+# # log-linear BART regression, plug-in inference
+# #   -> time: ~50 minutes
+# source(here::here("R", "outcome-analysis", "asthma-bart-plugin.R"))
+# 
+# # log-linear BART regression, with uncertainty propagation
+# #   -> time: ~41.5 hours / # workers (default: workers = detectCores())
+# source(here::here("R", "outcome-analysis", "asthma-bart-cut.R"))
 
 
 ##################################################################
@@ -203,61 +207,64 @@ Rcpp::sourceCpp(here::here("src", "pois-reg.cpp"))
 # compile 'stan' LM code and create copula for simulation study
 source(here::here("R", "sim-study", "sim-study-setup.R"))
 
-### ii. Continuous Outcome Models (CM)
+### Note: Sections ii - iv can be skipped; the results have been
+###   downloaded in Section 3. This saves you ~2951 computing hours.
 
-# CM1 with BART outcome model
-#   -> time: ~222 hrs / # workers
-source(here::here("R", "sim-study", "CM1-BART.R"))
-# CM1 with Bayesian linear regression outcome model
-#   -> time: ~42 hrs / # workers
-source(here::here("R", "sim-study", "CM1-lm.R"))
+# ### ii. Continuous Outcome Models (CM)
+# 
+# # CM1 with BART outcome model
+# #   -> time: ~222 hrs / # workers
+# source(here::here("R", "sim-study", "CM1-BART.R"))
+# # CM1 with Bayesian linear regression outcome model
+# #   -> time: ~42 hrs / # workers
+# source(here::here("R", "sim-study", "CM1-lm.R"))
+# 
+# # CM2 with BART outcome model
+# #   -> time: ~230 hrs / # workers
+# source(here::here("R", "sim-study", "CM2-BART.R"))
+# # CM2 with Bayesian linear regression outcome model
+# #   -> time: ~42 hrs / # workers
+# source(here::here("R", "sim-study", "CM2-lm.R"))
+# 
+# # CM3 with BART outcome model
+# #   -> time: ~250 hrs / # workers
+# source(here::here("R", "sim-study", "CM3-BART.R"))
+# # CM3 with Bayesian linear regression outcome model
+# #   -> time: ~17 hrs / # workers
+# source(here::here("R", "sim-study", "CM3-lm.R"))
 
-# CM2 with BART outcome model
-#   -> time: ~230 hrs / # workers
-source(here::here("R", "sim-study", "CM2-BART.R"))
-# CM2 with Bayesian linear regression outcome model
-#   -> time: ~42 hrs / # workers
-source(here::here("R", "sim-study", "CM2-lm.R"))
+# ### iii. Poisson Outcome Models (PM)
+# 
+# # PM1 with log-linear BART outcome model
+# #   -> time: ~600 hrs / # workers
+# source(here::here("R", "sim-study", "PM1-BART.R"))
+# # PM1 with Bayesian Poisson regression outcome model
+# #   -> time: ~90 hrs / # workers
+# source(here::here("R", "sim-study", "PM1-pois.R"))
+# 
+# # PM2 with log-linear BART outcome model
+# #   -> time: ~600 hrs / # workers
+# source(here::here("R", "sim-study", "PM2-BART.R"))
+# # PM2 with Bayesian Poisson regression outcome model
+# #   -> time: ~90 hrs / # workers
+# source(here::here("R", "sim-study", "PM2-pois.R"))
+# 
+# # PM2 with log-linear BART outcome model
+# #   -> time: ~600 hrs / # workers
+# source(here::here("R", "sim-study", "PM3-BART.R"))
+# # PM2 with Bayesian Poisson regression outcome model
+# #   -> time: ~96 hrs / # workers
+# source(here::here("R", "sim-study", "PM3-pois.R"))
 
-# CM3 with BART outcome model
-#   -> time: ~250 hrs / # workers
-source(here::here("R", "sim-study", "CM3-BART.R"))
-# CM3 with Bayesian linear regression outcome model
-#   -> time: ~17 hrs / # workers
-source(here::here("R", "sim-study", "CM3-lm.R"))
-
-### iii. Poisson Outcome Models (PM)
-
-# PM1 with log-linear BART outcome model
-#   -> time: ~600 hrs / # workers
-source(here::here("R", "sim-study", "PM1-BART.R"))
-# PM1 with Bayesian Poisson regression outcome model
-#   -> time: ~90 hrs / # workers
-source(here::here("R", "sim-study", "PM1-pois.R"))
-
-# PM2 with log-linear BART outcome model
-#   -> time: ~600 hrs / # workers
-source(here::here("R", "sim-study", "PM2-BART.R"))
-# PM2 with Bayesian Poisson regression outcome model
-#   -> time: ~90 hrs / # workers
-source(here::here("R", "sim-study", "PM2-pois.R"))
-
-# PM2 with log-linear BART outcome model
-#   -> time: ~600 hrs / # workers
-source(here::here("R", "sim-study", "PM3-BART.R"))
-# PM2 with Bayesian Poisson regression outcome model
-#   -> time: ~96 hrs / # workers
-source(here::here("R", "sim-study", "PM3-pois.R"))
-
-### iv. Log-linear BART sensitivity analysis
-
-# Sensitivity to the number of trees.
-#   -> time: ~20.5 hours / # workers
-source(here::here("R", "sim-study", "sensitivity-ntrees.R"))
-
-# Sensitivity to tree depth.
-#   -> time: ~52 hours / # workers
-source(here::here("R", "sim-study", "sensitivity-power.R"))
+# ### iv. Log-linear BART sensitivity analysis
+# 
+# # Sensitivity to the number of trees.
+# #   -> time: ~20.5 hours / # workers
+# source(here::here("R", "sim-study", "sensitivity-ntrees.R"))
+# 
+# # Sensitivity to tree depth.
+# #   -> time: ~52 hours / # workers
+# source(here::here("R", "sim-study", "sensitivity-power.R"))
 
 ### v. Process simulation study results
 #   -> creates list with bias, coverage, and variance results from
