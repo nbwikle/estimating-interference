@@ -2,7 +2,7 @@
 
 *Authors: Nathan B. Wikle and Corwin M. Zigler*
 
-This repository contains source code and additional supplementary materials from our manuscript, "Causal health impacts of power plant emission controls under modeled and uncertain physical process interference."  Supplementary materials from the manuscript, including a detailed simulation study, can be found within `supp-material.pdf`. Relevant data (doi = `10.5281/zenodo.8015586`) and results (doi = `10.5281/zenodo.8015752`) have been archived for reproducibility.
+This repository contains source code and additional supplementary materials from our manuscript, "Causal health impacts of power plant emission controls under modeled and uncertain physical process interference."  Supplementary materials from the manuscript, including a detailed simulation study, can be found in the included `Wikle_Zigler-SUPPLEMENT.pdf`. Relevant data (doi = `10.5281/zenodo.8015586`) and results (doi = `10.5281/zenodo.8015752`) have been archived for reproducibility.
 
 The following instructions provide details on how to run the source code underlying the analysis. 
 
